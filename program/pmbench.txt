@@ -1,0 +1,6 @@
+Test description                      ³  Elapsed time  ³   Operations   ³  Operations/sec
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+Draw bitmap (smoothness test)         ³          5.860 ³           3000 ³        511.945
+Draw bitmap (speed)                   ³          5.647 ³          37000 ³       6552.152
+Stretch bitmap                        ³          5.423 ³           1200 ³        221.280
+Draw horizontal/vertical lines        ³          5.765 ³         144000 ³      24978.317

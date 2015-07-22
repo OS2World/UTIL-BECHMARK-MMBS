@@ -1,0 +1,97 @@
+#include "pmbench.h"
+
+ICON ID_FRAMEWND pmbench.ico
+BITMAP IBMP_SFERAS   sferaS.bmp
+BITMAP IBMP_SFERAM   sferaM.bmp
+BITMAP IBMP_SFERAL   sferaL.bmp
+
+MENU ID_FRAMEWND
+{
+   SUBMENU "~File", MI_FILE
+   {
+      MENUITEM "Run ~all tests", MI_RUNALL
+//      MENUITEM SEPARATOR
+      MENUITEM "~Results",  MI_RESULTS
+//      MENUITEM SEPARATOR
+      MENUITEM "~Options",  MI_OPTIONS
+      MENUITEM SEPARATOR
+      MENUITEM "E~xit", SC_CLOSE, MIS_SYSCOMMAND
+   }
+   SUBMENU "~Bitmap tests", MI_TESTBMP
+   {
+      MENUITEM "~Smoothness", MI_FLUIDITY
+      MENUITEM "Spee~d", MI_DRAWBITMAP
+      MENUITEM "Stretc~h", MI_BMPSTRETCH
+   }
+   SUBMENU "~Lines/rectangles/text", MI_GPI
+   {
+      MENUITEM "Draw ~lines", MI_DRAWLINES
+      MENUITEM "Draw ~rectangles", MI_FILLRECTANGLES
+      MENUITEM "Draw ~text", MI_DRAWTEXT
+   }
+   SUBMENU "~PM windows", MI_TESTPM
+   {
+      MENUITEM "~Dialog loading", MI_LOADDLG
+      MENUITEM "~Move window", MI_MOVEWINDOW
+      MENUITEM "~Size window", MI_SIZEWINDOW
+   }
+}
+
+DLGTEMPLATE RI_DLGOPTIONS LOADONCALL MOVEABLE DISCARDABLE
+{
+    DIALOG  "Options", RI_DLGOPTIONS, 12, 6, 200, 136, WS_VISIBLE, FCF_SYSMENU |
+            FCF_TITLEBAR
+            PRESPARAMS PP_FONTNAMESIZE, "9.WarpSans"
+    {
+        GROUPBOX        SZ_DOGRP, RI_DOGRP, 2, 66, 196, 62
+        LTEXT           SZ_DOTEXT, RI_DOTEXT, 6, 87, 187, 30, DT_WORDBREAK
+        AUTORADIOBUTTON "1", RI_DORD_1, 8, 71, 24, 10, WS_GROUP | WS_TABSTOP
+        AUTORADIOBUTTON "2", RI_DORD_2, 35, 71, 24, 10
+        AUTORADIOBUTTON "3", RI_DORD_3, 62, 71, 24, 10
+        AUTORADIOBUTTON "5", RI_DORD_5, 89, 71, 24, 10
+        AUTORADIOBUTTON "10", RI_DORD_10, 116, 71, 24, 10
+        AUTORADIOBUTTON "20", RI_DORD_20, 143, 71, 24, 10
+        AUTORADIOBUTTON "50", RI_DORD_50, 170, 71, 24, 10
+        AUTOCHECKBOX    SZ_DOPROMPT, RI_DOCHKPROMPT, 2, 48, 196, 10, WS_GROUP | WS_TABSTOP
+        AUTOCHECKBOX    SZ_DOSAVE, RI_DOCHKSAVE, 2, 34, 196, 10
+        ENTRYFIELD      "", RI_DOEFSAVE, 4, 22, 192, 8, ES_MARGIN | WS_GROUP | WS_TABSTOP
+                        CTLDATA 8, 260, 0, 0
+        PUSHBUTTON      SZ_DOOK, RI_DOBTNOK, 2, 2, 48, 13
+        PUSHBUTTON      SZ_DOCANCEL, RI_DOBTNCANCEL, 52, 2, 48, 13
+    }
+}
+
+DLGTEMPLATE RI_DLGTEST LOADONCALL MOVEABLE DISCARDABLE
+{
+    DIALOG  "PM Benchmark Test Dialog Title", RI_DLGTEST, 0, 0, 280, 190,
+            FS_DLGBORDER | WS_VISIBLE, FCF_SYSMENU |
+            FCF_TITLEBAR | FCF_MINBUTTON | FCF_MAXBUTTON
+            PRESPARAMS PP_FONTNAMESIZE, "9.WarpSans"
+    {
+        GROUPBOX        "Group Left Top", RI_DTGRP1, 1, 96, 138, 90
+        MLE             "", RI_DTMLE, 6, 100, 130, 76, MLS_READONLY |
+                        MLS_WORDWRAP | MLS_VSCROLL | WS_GROUP
+        GROUPBOX        "Group Right Top", RI_DTDTGRP2, 141, 96, 138, 90
+        AUTORADIOBUTTON "Radio button one [~1]", RI_DTRDBTN1, 146, 160, 130, 10,
+                        WS_TABSTOP
+        AUTORADIOBUTTON "Radio button two [~2]", RI_DTRDBTN2, 146, 150, 130, 10
+        AUTORADIOBUTTON "Radio button three [~3]", RI_DTRDBTN3, 146, 140, 130, 10
+        AUTORADIOBUTTON "Radio button four [~4]", RI_DTRDBTN4, 146, 130, 130, 10
+        AUTORADIOBUTTON "Radio button five [~5]", RI_DTRDBTN5, 146, 120, 130, 10
+        AUTORADIOBUTTON "Radio button six [~6]", RI_DTRDBTN6, 146, 110, 130, 10
+        AUTORADIOBUTTON "Radio button seven [~7]", RI_DTRDBTN7, 146, 100, 130, 10
+        GROUPBOX        "Group Left Bottom", RI_DTGRP3, 1, 1, 138, 90
+        PUSHBUTTON      "Button One (~1)", RI_DTBTN1, 5, 66, 64, 14
+        PUSHBUTTON      "Button Two (~2)", RI_DTBTN2, 71, 66, 64, 14
+        PUSHBUTTON      "Button Three (~3)", RI_DTBTN3, 5, 51, 64, 14
+        PUSHBUTTON      "Button Four (~4)", RI_DTBTN4, 71, 51, 64, 14
+        PUSHBUTTON      "Button Five (~5)", RI_DTBTN5, 5, 35, 64, 14
+        PUSHBUTTON      "Button Six (~6)", RI_DTBTN6, 71, 35, 64, 14
+        PUSHBUTTON      "Button Seven (~7)", RI_DTBTN7, 5, 20, 64, 14
+        PUSHBUTTON      "Button Eight (~8)", RI_DTBTN8, 71, 20, 64, 14
+        PUSHBUTTON      "Button Nine (~9)", RI_DTBTN9, 5, 4, 64, 14
+        PUSHBUTTON      "Button Ten (1~0)", ,RI_DTBTN10 71, 4, 64, 14
+        GROUPBOX        "Group Right Bottom", RI_DTGRP4, 141, 1, 138, 90
+        LISTBOX         RI_DTLBOX, 145, 5, 130, 76, LS_NOADJUSTPOS
+    }
+}

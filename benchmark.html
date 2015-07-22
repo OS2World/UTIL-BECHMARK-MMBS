@@ -1,0 +1,388 @@
+<html><head>
+<title>My Micro Benchmark Suite</title>
+</head>
+<body text="#000000" bgcolor="#ffffff" link="#0000ff" alink="#ff0000" vlink="#800080">
+<h1>MMBS v. 1.0</h1>
+<b>(My Micro Benchmark Suite)</b>
+<br>
+<hr width="100%" size="2">
+<ul>
+  <li><a href="#Introduction_">Introduction</a></li>
+  <li><a href="#License_agreement">License agreement</a><br></li>
+  <li><a href="#WorkBench">WorkBench</a></li>
+  <ul>
+    <li><a href="#Startup_parameters">Startup parameters</a></li>
+    <li><a href="#Timer_test">Timer accuracy test</a></li>
+    <li><a href="#Mathematical_tests">Mathemathical operation tests</a></li>
+    <li><a href="#File_operations_tests">File operation tests</a></li>
+    <li><a href="#Text_string_operations">Text string operations</a></li>
+  </ul>
+  <li><a href="#PMBench">PMBench</a></li>
+  <ul>
+    <li><a href="#The_menu_items">The menu items</a><br></li>
+    <li><a href="#Options_dialog">Options dialog</a><br></li>
+    <li><a href="#Bitmap_operations">Bitmap operations</a></li>
+    <li><a href="#Graphic_primitives">Graphic primitives</a></li>
+    <li><a href="#Dialog_windows">Dialog windows</a></li>
+  </ul>
+</ul>
+<br>
+<hr width="100%" size="2">
+
+<h2><a name="Introduction_"></a>Introduction</h2>
+I wrote these small programs mainly to compare the performances of OS/2
+- eComStation running on a real machine and within a virtual machine
+(twoOStwo and Virtual PC).<br>
+Since time measurement of the benchmark test is not accurate when the
+programs are executed within a virtual machine I provided some options
+to make it easier to measure the time needed to complete the single
+benchmark tests with a real chronometer (i.e. not the PC timer).<br>
+<p>
+The benchmark suite consists of two simple programs:</p>
+<dl>
+<dt>WORKBNCH.EXE</dt>
+<dd>a command line program which allows to check the performances with
+mathematical operations, file operations and text parsing;</dd>
+<dt>PMBENCH.EXE</dt>
+<dd>a PM program to check the performances with the most common graphic
+primitives (bitmap, line, rectangle and text drawing)
+and with dialog loading, moving and sizing.</dd>
+</dl>
+<b><font color="#ff0000">WARNING</font></b>
+<ol>
+  <li>All benchmark tests are executed at time critical priority ! You
+will not be able to use the machine for any other purpose while a benchmark test is running !!! </li>
+  <li>The program <a href="#WorkBench">WORKBNCH.EXE</a> needs about 512 MB of
+  free space on the drive containing the <a href="#testpath">test path</a>!</li>
+  <li>WORKBNCH.EXE on termination completely removes the test path and all
+  its content, so <b>do not specify as test path a path containing data!</b>
+  Just specify the name of a new directory, WORKBNCH.EXE will create it.</li>
+</ol>
+<br>
+<hr width="100%" size="2">
+<h2><a name="License_agreement"></a>License agreement</h2>
+<ul>
+<li>You are allowed to use this program as you find suitable.</li>
+<li>You are allowed to modify the program source code to suit your needs.</li>
+<li>The program, in its current version, may be installed on as many machines
+  as you like.</li>
+<li>You are free to distribute the program provided that you include all
+  the files in the original archive without any modification.</li>
+<li>You are not allowed to sell the program, but can charge
+  a reasonable amount to cover the cost of the distribution media.</li>
+<li>Under no circumstances will the author be liable for any loss
+  or damage that may be derived from the use of the program.</li>
+<li>MMBS is the copyrighted property of Alessandro Felice Cantatore,
+  Bitonto, Bari, Italy.</li>
+</ul>
+<br>
+<hr width="100%" size="2">
+<h2><a name="WorkBench">WorkBench</a></h2>
+WorkBench is a command line program which operates in various modes
+according to the startup parameters.
+
+<h3><a name="Startup_parameters">Startup parameters</a></h3>
+You can get the program syntax by starting it with an invalid
+parameter or with <tt>'-?'</tt>, <tt>'/h'</tt>, <tt>'/H'</tt>.
+<p>All program parameters are optional. They are introduced by a
+letter specifying a subcommand, a semicolon and the subcommand
+parameter. All subcommand and subcommand parameters are case
+insensitive.
+</p>
+<p>
+To run all the benchmark tests you have to type :
+</p>
+<pre>
+WORKBNCH [p:testpath] [l:logfile] [s:speed] [o:options]
+</pre>
+<u>where:</u>
+<dl>
+  <dt><a name="testpath"><tt>testpath</tt></a></dt>
+    <dd>is the path where the program puts all the files and the
+    directories created during the execution of the various tests.
+    <br>The default value is the subdirectory <i>TEST</i>&nbsp; in
+    the current working path.<br>
+    <b>Note:</b>
+    <ol>
+      <li>the program needs about 512 MB of free space on the drive containing the test path!</li>
+      <li>the program takes care of creating the test directory if it doesn't exist.</li>
+      <li>The program removes the test directory and all its content on termination!</li>
+    </ol>
+    </dd>
+  <dt><tt>logfile</tt></dt>
+    <dd>output file containing a short description of the tests and the result.
+    The default value is <i>results.txt</i>&nbsp; in the working path.</dd>
+  <dt><tt>speed</tt></dt>
+    <dd>is a value ranging from 0 to 9 and sets the time needed to complete each test.
+    <br>With a speed of 0, on a slow machine such
+    like a Pentium 100 MHz, some test may take long.
+    <br>It is better to check with the highest speed first and then repeat
+    with a lower speed to get more accurate results.
+    <br>The default value is 7.</dd>
+  <dt><tt>options</tt></dt>
+    <dd>
+    <dl>
+      <dt><tt>U (run unattended)</tt></dt>
+        <dd>will run all tests without prompting. This is useful when executing
+        the benchmark on a real machine. You must avoid
+        this when executing in a virtual machine as the reported
+        times are not real although in some cases migth be not far from
+        the real ones.</dd>
+      <dt><tt>Q (quiet)</tt></dt>
+        <dd>only display test ID, iterations and results (i.e. do not display
+        the test description).</dd>
+      <dt><tt>P (progress)</tt></dt>
+        <dd>to show a progress bar. This may be useful if you are running
+        the benchmark for the first time and are not sure how long it is
+        going to take.</dd>
+      <dt><tt>N (no-check)</tt></dt>
+        <dd>do not check for free space on the test path. This is mainly
+        for debugging purpose. You should just ignore it !</dd>
+     </dl>
+     </dd>
+</dl>
+<u>examples:</u>
+<dl>
+  <dt><tt>WORKBNCH</tt></dt>
+    <dd>run all tests creating the needed files and directories in the
+    <i>TEST</i>&nbsp; directory in the working path, and saving the results
+    in the <i>results.txt</i>&nbsp; file.</dd>
+  <dt><tt>WORKBNCH T:f:\mydir l:c:\workbnch.log s:9 o:up</tt></dt>
+    <dd>run all tests creating the test files and directories in
+    <tt>F:\MYDIR</tt>, the test results are logged in <tt>C:\WORKBNCH.LOG</tt>,
+    the tests are executed at the maximum speed (<tt>s:9</tt>), you are not prompted
+    before executing each test(<tt>o:<u>u</u></tt>) and a progress bar is displayed on
+    the screen (<tt>o:<u>p</u></tt>) to show the state of the current test.</dd>
+</dl>
+<p>
+Other subcommands are available for debugging purpose. These may
+provide unpredictable results (i.e. the program will terminate with an
+error message) if they are not used in the correct context.<br>
+These commands allow to run a specific test for a specified number of times.</p>
+<p>The syntax is:</p>
+<pre>
+WORKBNCH &lt;t:test_id&gt; [i:iterations] [p:testpath] [l:logfile] [o:options]<br>
+</pre>
+<u>where:</u>
+<dl>
+  <dt><tt>test_id</tt></dt>
+    <dd>is mandatory and is a number ranging from 1 to 23 (see the
+    <a href="#Timer_test">test descriptions below</a>
+    for more details about the test IDs).</dd>
+  <dt><tt>iterations</tt></dt>
+    <dd>means how many time the test operation must be repeated.</dd>
+</dl>
+<p>The other parameters have been described above.</p>
+
+<h3><a name="Timer_test"></a>Timer accuracy test (id: 1)</h3>
+The purpose of this test is to compare the PC timer with a real world
+timer to check the virtual machines timer accuracy.<br>By
+the way, during my tests, I found that the virtual machine timers
+usually delay a few tenths of milliseconds with WORKBNCH.EXE while may
+delay a few seconds with PMBENCH.EXE.<br>When the 'U' option is entered (unattended mode) this test is skipped.<br>
+
+<h3><a name="Mathematical_tests"></a>
+Mathematical operations tests (id: 2-4)</h3>
+The algorithms used by the mathematical tests are quite simple. I
+modified them from an article on the net reporting performances tests
+of various programming language. Unfortunately I do not remember the
+original URL, but I do not think that this is a problem as the code is so
+basic that I doubt that anybody would ever claim a copyright infringment
+(I just wonder when, in the US, somebody will pretend to patent the
+wheel).<br>
+I know that there are much more accurate tests but I didn't care as
+these tests should be enough accurate for the current purposes (i.e.
+comparing virtual and real PCs).
+<dl>
+  <dt><b>Integer operations (id: 2)</b><dt>
+    <dd>executes the basic integer operations (sum, subtraction,
+    multiplication and division).</dd>
+  <dt><b>Floating point operations (id: 3)</b></dt>
+    <dd>This test works exactly like the previous one, but the operations
+    are executed on floating point operands.</dd>
+  <dt><b>Trigonometric operations (id: 4)</b></dt>
+    <dd>just executes a series of trignonometric operations : sin, cosin,
+    tangent and logarithm and square root.</dd>
+</dl>
+<h3><a name="File_operations_tests"></a>File operations tests (id: 5-15)</h3>
+These tests measure the perfomances in writing, reading, zipping, unzipping and deleting directories and files of various sizes.<br>
+All the files are text file generated by using a dictionary of
+pseudo-text words (i.e. words created by randomly concatenating vowels
+and consonants) separated by a set of randomly chosen separator strings
+(like ", ", "! ", "\r\n", etc.).
+<p>
+All file operations go through the file system cache as the purpose of
+the tests is comparing real machines with virtual ones, not to check the
+hardware performance.
+</p>
+<p>
+Each test is run multiple times, according to the speed set via the program
+startup parameters.
+</p>
+<dl>
+  <dt><b>Multiple file write (id: 5)</b></dt>
+    <dd>measures the performances by creating 100 directories, each directory
+    containing 2 subdirectories and each subdirectory containing 32 text files
+    of size ranging from 1KB to 16 KB. For each iteration
+    100 directories, 200 subdirectories and 6400 text files are created.</dd>
+  <dt><b>Large file write (id: 6)</b></dt>
+    <dd>measures the performances by writing a large text file (128 MB).
+    The file is written multiple times according to the set speed.</dd>
+  <dt><b>Multiple file read (id: 7)</b></dt>
+    <dd>measures the file read performances by reading multiple files
+    (i.e. the files created during test 5).</dd>
+  <dt><b>Large file read (id: 8)</b></dt>
+    <dd>measures the file read performances by reading a 128 MB file (i.e.
+    the file created during test 6).</dd>
+  <dt><b>Multiple file copy (id: 9)</b></dt>
+    <dd>measures the file copying performances by copying a tree of files
+    containing 25 directories, 50 subdirectories and 1600 files with a size
+    ranging from 1KB to 16 KB.</dd>
+  <dt><b>Large file copy (id: 10)</b></dt>
+    <dd>measures the file copy performances by copying a 128 MB file
+    (i.e. the file created during test 6).</dd>
+  <dt><b>File tree zip (sequential - id: 11)</b></dt>
+    <dd>measures the file zipping performances by sequentially executing
+    ZIP.EXE (with the highest compression) for each file contained in a
+    tree of 2 directories, 4 subdirectories and 128 files.</dd>
+  <dt><b>File tree zip (in one run - id: 12)</b></dt>
+    <dd>measures the file zipping performances by compressing with highest rate
+    a tree of files (-r option) containing 16 directories, 32
+    subdirectories and 1024 files.</dd>
+  <dt><b>Large file zip (id: 13)</b></dt>
+    <dd>measures the file zipping performances by compressing a 128 MB file
+    (i.e. the file created during test 6).</dd>
+  <dt><b>File tree unzip (id: 14)</b></dt>
+    <dd>measures the file unzipping performances by unzipping, with the
+    overwrite flag, the archive created during test 12.</dd>
+  <dt><b>File tree deletion (id: 15)</b></dt>
+    <dd>deletes all the files created during the previous test reporting
+    the elapsed time. The speed option has no effect on this test.</dd>
+</dl>
+<h3><a name="Text_string_operations"></a>Text string operations (id: 16-23)</h3>
+These tests measure the performances of various common text string
+operations : character statistics, word extraction from a text file,
+word sorting, case conversion and word search.
+<p>Most test are performed on a 2 MB text file containing mixed case
+words generated by a special random text generator.</p>
+<dl>
+  <dt><b>Character statistics test (id: 16)</b></dt>
+    <dd>counts the occurrences of the various characters contained in a
+    2 MB text file.</dd>
+  <dt><b>Word parsing test (id: 17)</b></dt>
+    <dd>extract the text words contained in a 2 MB text file.</dd>
+  <dt><b>Word sort test (case insensitive - id: 18)</b></dt>
+    <dd>sort case insensitively the words previously extracted from
+    a 2 MB text file.</dd>
+  <dt><b>Word sort test (case sensitive - id: 19)</b></dt>
+    <dd>sort case sensitively the words previously extracted from
+    a 2 MB text file.</dd>
+  <dt><b>Case conversion test (uppercase - id: 20)</b></dt>
+    <dd>converts a 2 MB text file to upper case.</dd>
+  <dt><b>Case conversion test (lowercase - id: 21)</b></dt>
+    <dd>converts a 2 MB text flie to lower case.</dd>
+  <dt><b>Word search test (case insensitive - id: 22)</b></dt>
+    <dd>perform a case insensitive search of a word in a 2 MB text
+    file counting the occurrences.</dd>
+  <dt><b>Word search test (case sensitive - id: 23)</b></dt>
+    <dd>perform a case sensitive search of a word in a 2 MB text file
+    counting the occurrences.</dt>
+</dl>
+<hr width="100%" size="2">
+<h2><a name="PMBench"></a>PMBench</h2>
+This program measures the performances of some of the most used graphic
+operations: bitmap rendering, drawing lines, rectangles and text,
+loading, moving and sizing a dialog.
+<p>
+The program interface consists in a standard PM window with a menu bar
+which allows to execute a specific test or all tests.
+</p>
+<h3><a name="The_menu_items"></a>The menu items</h3>
+<ul>
+  <li>File</li>
+  <ul>
+  <dl>
+    <dt>Run all tests</dt>
+      <dd> executes all the tests optionally asking the user confirmation
+      via a message box.</dd>
+    <dt>Results</dt>
+      <dd>displays a table with the results (elapsed times,
+      performed operations, operations per second) of all the executed tests.</dd>
+    <dt>Options</dt>
+      <dd>displays the <a href="#Options_dialog">Options dialog</a></dd>
+    <dt>Exit</dt>
+      <dd>terminate the program</dd>
+  </dl>
+  </ul>
+  <li><a href="#Bitmap_operations">Bitmap tests</a></li>
+  <ul>
+    <li>Smoothness</li>
+    <li>Speed</li>
+    <li>Stretch</li>
+  </ul>
+  <li><a href="#Graphic_primitives">Lines/rectangles/text</a></li>
+  <ul>
+    <li>Draw lines</li>
+    <li>Draw rectangles</li>
+    <li>Draw text</li>
+  </ul>
+  <li><a href="#Dialog_windows">PM windows</a></li>
+  <ul>
+    <li>Dialog loading</li>
+    <li>Move window</li>
+    <li>Size window<br>
+    </li>
+  </ul>
+</ul>
+<h3><a name="Options_dialog"></a>Options dialog</h3>
+<dl>
+  <dt>The <i>Benchmark test iteration factor</i></dt>
+    <dd>sets a common iteration multiplier for all tests. High values
+    produce more accurate results but the test take longer.</dd>
+  <dt><i>Prompt the user for the next test</i></dt>
+    <dd>is provided to run all the benchmarks in a virtual machine since
+    the virtual machine timer usually yelds inaccurate results. To properly
+    execute the tests in a virtual machine you have to use a real
+    chronometer and check how long time is needed to execute the various
+    tests.</dd>
+  <dt><i>Save the results as:</i></dt>
+    <dd>allows to specify the name of a file where the benchmark
+    results will be written on program termination.</dd>
+</dl>
+<h3><a name="Bitmap_operations"></a>Bitmap operations</h3>
+<dl>
+  <dt><b>Smoothness</b></dt>
+    <dd>allows to compare the smoothness of an animation performed in a real
+    machine with that performed in a virtual machine. Usually the animation
+    performed in the virtual machine is not so fluid as the one performed
+    in the real machine.</dd>
+  <dt><b>Speed</b></dt>
+    <dd>measures the bitmap drawing performance.</dd>
+  <dt><b>Stretch</b></dt>
+    <dd>measures the bitmap drawing performance by continuously enlarging
+    and reducing a bitmap.</dd>
+</dl>
+<h3><a name="Graphic_primitives"></a>Graphic primitives</h3>
+<dl>
+  <dt><b>Lines</b></dt>
+    <dd>draws vertical and horizontal lines of various colours and sizes.</dd>
+  <dt><b>Rectangles</b></dt>
+    <dd>draws filled rectangles of various colours and sizes.</dd>
+  <dt><b>Text</b></dt>
+    <dd>draws a text string of various colors multiple times.</dd>
+</dl>
+<h3><a name="Dialog_windows"></a>Dialog windows</h3>
+<dl>
+  <dt><b>Dialog loading</b></dt>
+    <dd>creates and destroys a dialog window containing various controls
+    (buttons, radiobuttons, multi line edit and listbox) multiple times.</dd>
+  <dt><b>Move window</b></dt>
+    <dd>moves a dialog window on the screen (<i>Full window drag</i>&nbsp;
+    should be enabled in order to provide significative results).</dd>
+  <dt><b>Size window</b></dt>
+    <dd>changes the size of a dilaog window in 1 pixel steps. The dialog
+    procedure takes care of re-sizing and re-positioning the inner controls
+    so that a lot of calculations are performed for each size change.</dd>
+</dl>
+
+</body></html>

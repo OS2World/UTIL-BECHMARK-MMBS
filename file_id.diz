@@ -1,0 +1,9 @@
+A suite of simple benchmarks for OS/2.
+PMBENCH.EXE tests bitmap, line, rectangle
+and text drawing, dialog creation, motion
+and sizing.
+WORKBNCH.EXE tests integer, floating point
+and trigonometric operations; file read,
+write, zip, unzip, delete; text file parsing
+and sorting.
+Source code included.
