@@ -3,7 +3,7 @@ MMBS  - My Micro Benchmark Suite. Beckmark tools for OS/2.
 
 LICENSE
 ===============
-* Not Specified
+* BSD 3-Clause
 
 COMPILE TOOLS
 ===============
